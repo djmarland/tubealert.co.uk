@@ -4,7 +4,9 @@ const fetchData = async (appID, appKey) => {
     `?app_id=${appID}` +
     `&app_key=${appKey}`;
 
-  const data = await fetch(url).then((d) => d.json);
+  console.log("Fetching data");
+  const data = await fetch(url).then((d) => d.json());
+  console.log("JSON received");
   return JSON.stringify(data);
 };
 
