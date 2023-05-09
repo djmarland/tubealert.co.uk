@@ -1,9 +1,0 @@
-.Lines {
-  columns: 2;
-  column-gap: 0;
-}
-
-.Line {
-  background: var(--color-line-background);
-  color: var(--color-line-foreground);
-}

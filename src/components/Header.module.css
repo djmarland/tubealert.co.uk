@@ -1,8 +1,0 @@
-.Header {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--spacing-unit-gap);
-  background: var(--color-header-background);
-  color: var(--color-header-text);
-  width: 100%;
-}
