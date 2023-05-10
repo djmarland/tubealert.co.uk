@@ -1,11 +1,20 @@
-import type { Component } from "solid-js";
+import { Component, onCleanup } from "solid-js";
 
 import { Header } from "./components/Header";
 import { Lines } from "./components/Lines";
-import { ViewContextProvider } from "./view.context";
+import { setActiveView } from "./view.context";
 import { ActiveLine } from "./components/ActiveLine";
 
 const App: Component = () => {
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setActiveView(null);
+    }
+  };
+  document.addEventListener("keydown", onKeyDown);
+  onCleanup(() => document.removeEventListener("keydown", onKeyDown));
+
   return (
     <>
       <div style="display:none">
@@ -29,6 +38,10 @@ const App: Component = () => {
                 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.66z"
             ></path>
           </symbol>
+          <symbol id="icon-close" viewBox="0 0 24 24">
+            {/* <path fill="none" d="M0 0h24v24H0z" /> */}
+            <path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+          </symbol>
           <symbol id="icon-alert" viewBox="0 0 24 24">
             <path
               d="M13 13h-2V7h2m0 10h-2v-2h2M12 2A10 10 0 0 0 2 
@@ -37,13 +50,11 @@ const App: Component = () => {
           </symbol>
         </svg>
       </div>
-      <ViewContextProvider>
-        <div class="grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen">
-          <Header />
-          <Lines />
-        </div>
-        <ActiveLine />
-      </ViewContextProvider>
+      <div class="grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen">
+        <Header />
+        <Lines />
+      </div>
+      <ActiveLine />
     </>
   );
 };

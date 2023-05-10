@@ -107,6 +107,9 @@ export const ALL_LINES: Line[] = [
   },
 ];
 
+export const getLineByUrlKey = (urlKey: string | null) =>
+  urlKey ? ALL_LINES.find((l) => l.urlKey === urlKey) : null;
+
 export type Severity = {
   title: string;
   disrupted: boolean;

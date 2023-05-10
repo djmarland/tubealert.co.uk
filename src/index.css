@@ -89,62 +89,62 @@
     fill: currentColor;
   }
 
-  [data-line="bakerloo"] {
+  [data-line="bakerloo-line"] {
     --color-line-background: var(--color-line-bakerloo-background);
     --color-line-foreground: var(--color-line-bakerloo-foreground);
   }
 
-  [data-line="central"] {
+  [data-line="central-line"] {
     --color-line-background: var(--color-line-central-background);
     --color-line-foreground: var(--color-line-central-foreground);
   }
 
-  [data-line="circle"] {
+  [data-line="circle-line"] {
     --color-line-background: var(--color-line-circle-background);
     --color-line-foreground: var(--color-line-circle-foreground);
   }
 
-  [data-line="district"] {
+  [data-line="district-line"] {
     --color-line-background: var(--color-line-district-background);
     --color-line-foreground: var(--color-line-district-foreground);
   }
 
-  [data-line="hammersmith-city"] {
+  [data-line="hammersmith-city-line"] {
     --color-line-background: var(--color-line-hammersmith-city-background);
     --color-line-foreground: var(--color-line-hammersmith-city-foreground);
   }
 
-  [data-line="jubilee"] {
+  [data-line="jubilee-line"] {
     --color-line-background: var(--color-line-jubilee-background);
     --color-line-foreground: var(--color-line-jubilee-foreground);
   }
 
-  [data-line="metropolitan"] {
+  [data-line="metropolitan-line"] {
     --color-line-background: var(--color-line-metropolitan-background);
     --color-line-foreground: var(--color-line-metropolitan-foreground);
   }
 
-  [data-line="northern"] {
+  [data-line="northern-line"] {
     --color-line-background: var(--color-line-northern-background);
     --color-line-foreground: var(--color-line-northern-foreground);
   }
 
-  [data-line="piccadilly"] {
+  [data-line="piccadilly-line"] {
     --color-line-background: var(--color-line-piccadilly-background);
     --color-line-foreground: var(--color-line-piccadilly-foreground);
   }
 
-  [data-line="victoria"] {
+  [data-line="victoria-line"] {
     --color-line-background: var(--color-line-victoria-background);
     --color-line-foreground: var(--color-line-victoria-foreground);
   }
 
-  [data-line="waterloo-city"] {
+  [data-line="waterloo-city-line"] {
     --color-line-background: var(--color-line-waterloo-city-background);
     --color-line-foreground: var(--color-line-waterloo-city-foreground);
   }
 
-  [data-line="elizabeth"] {
+  [data-line="elizabeth-line"] {
     --color-line-background: var(--color-line-elizabeth-background);
     --color-line-foreground: var(--color-line-elizabeth-foreground);
   }

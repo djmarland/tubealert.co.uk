@@ -1,4 +1,4 @@
-import { useContext } from "solid-js";
+import { onCleanup, onMount, useContext } from "solid-js";
 import { Line } from "../services/Line";
 import { ALL_LINES } from "../services/Line";
 import Alert from "./Icons/Alert";
@@ -9,14 +9,10 @@ export const Lines = () => {
   return (
     <menu class="overflow-y-auto lg:columns-2 gap-0 ">
       {ALL_LINES.map((line: Line) => (
-        <li
-          key={line.tflKey}
-          class="bg-line-background text-line-foreground"
-          data-line={line.tflKey}
-        >
+        <li data-line={line.urlKey}>
           <a
             href={`/${line.urlKey}`}
-            class="p-1 flex justify-between gap-1 items-center"
+            class="bg-line-background text-line-foreground p-1 flex justify-between gap-1 items-center hover:opacity-80"
             onClick={(e) => {
               e.preventDefault();
               setActiveView(line.urlKey);

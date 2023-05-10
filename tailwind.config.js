@@ -8,6 +8,7 @@ module.exports = {
       0.5: "8px",
       1: "16px",
       2: "32px",
+      3: "48px",
     },
     extend: {
       colors: {
