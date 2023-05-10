@@ -2,7 +2,7 @@ import type { Component } from "solid-js";
 
 import { Header } from "./components/Header";
 import { Lines } from "./components/Lines";
-import { CounterProvider } from "./view.context";
+import { ViewContextProvider } from "./view.context";
 import { ActiveLine } from "./components/ActiveLine";
 
 const App: Component = () => {
@@ -37,13 +37,13 @@ const App: Component = () => {
           </symbol>
         </svg>
       </div>
-      <CounterProvider>
+      <ViewContextProvider>
         <div class="grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen">
           <Header />
           <Lines />
         </div>
         <ActiveLine />
-      </CounterProvider>
+      </ViewContextProvider>
     </>
   );
 };

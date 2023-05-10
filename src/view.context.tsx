@@ -24,7 +24,7 @@ export const ViewContext = createContext<ViewContextValue>({
   setActiveLine: () => {},
 });
 
-export const CounterProvider: Component<ParentProps> = (props) => {
+export const ViewContextProvider: Component<ParentProps> = (props) => {
   const [activeLine, setActiveLine] = createSignal<LineValue>(null);
 
   const context: ViewContextValue = {
