@@ -33,51 +33,49 @@ export const ActiveLine: Component = () => {
           : "translate-y-full lg:translate-y-0 lg:translate-x-full"
       }`}
     >
-      <h1>
-        <div
-          class="bg-line-background text-line-foreground
+      <div
+        class="bg-line-background text-line-foreground
           rounded-t-xl  lg:rounded-tr-none lg:rounded-tl-xl
           flex justify-between gap-1 items-center
-          py-0.5 px-1"
+          py-0.5 pl-1 pr-0.5"
+      >
+        <h1 class="text-2xl font-thin">{currentData()?.name}</h1>
+        <a
+          class="w-3 h-3 p-0.5 inline-block"
+          href="/"
+          title="Close"
+          onClick={(e) => {
+            e.preventDefault();
+            setActiveView(null);
+          }}
         >
-          <h1 class="text-2xl font-thin">{currentData()?.name}</h1>
-          <a
-            class="w-3 h-3 p-0.5 inline-block"
-            href="/"
-            title="Close"
-            onClick={(e) => {
-              e.preventDefault();
-              setActiveView(null);
-            }}
-          >
-            <Close />
-          </a>
-        </div>
-        <div class="p-1 space-y-1 max-h-[70vh] overflow-y-auto">
-          <h2 class="text-xl">Good Service</h2>
-          <p>Delays in places</p>
-          <hr />
-          <details>
-            <summary>Subscribe for alerts</summary>
-            <div>
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-              Yo it goes in here. <br />
-            </div>
-          </details>
-        </div>
-      </h1>
+          <Close />
+        </a>
+      </div>
+      <div class="p-1 space-y-1 max-h-[70vh] overflow-y-auto">
+        <h2 class="text-xl">Good Service</h2>
+        <p>Delays in places</p>
+        <hr />
+        <details>
+          <summary>Subscribe for alerts</summary>
+          <div>
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+            Yo it goes in here. <br />
+          </div>
+        </details>
+      </div>
     </div>
   );
 };
