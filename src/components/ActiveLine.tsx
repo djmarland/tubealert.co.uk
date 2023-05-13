@@ -38,7 +38,7 @@ export const ActiveLine: Component = () => {
           class="bg-line-background text-line-foreground
           rounded-t-xl  lg:rounded-tr-none lg:rounded-tl-xl
           flex justify-between gap-1 items-center
-          p-1"
+          py-0.5 px-1"
         >
           <h1 class="text-2xl font-thin">{currentData()?.name}</h1>
           <a
