@@ -17,10 +17,11 @@ export const ActiveLine: Component = () => {
   return (
     <div
       data-line={currentData()?.urlKey}
-      class={`bg-stone-50 text-stone-950 dark:bg-stone-900 dark:text-stone-50 
+      class={`bg-stone-50/90 text-stone-950 dark:bg-stone-900/90 dark:text-stone-50 
+      backdrop-blur-lg
     shadow-[0_0_16px_0_rgba(0,0,0,0.5)]
       fixed bottom-0 left-0 w-screen
-       rounded-t-2xl  lg:rounded-tr-none lg:rounded-l-2xl
+       rounded-t-xl  lg:rounded-tr-none lg:rounded-l-xl
       lg:top-0 lg:left-auto lg:right-0
       lg:max-w-[600px]
       will-change-transform
@@ -35,7 +36,7 @@ export const ActiveLine: Component = () => {
       <h1>
         <div
           class="bg-line-background text-line-foreground
-          rounded-t-2xl  lg:rounded-tr-none lg:rounded-tl-2xl
+          rounded-t-xl  lg:rounded-tr-none lg:rounded-tl-xl
           flex justify-between gap-1 items-center
           p-1"
         >
@@ -52,9 +53,29 @@ export const ActiveLine: Component = () => {
             <Close />
           </a>
         </div>
-        <div class="p-1">
-          HELLO <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
-          AND MORE
+        <div class="p-1 space-y-1 max-h-[70vh] overflow-y-auto">
+          <h2 class="text-xl">Good Service</h2>
+          <p>Delays in places</p>
+          <hr />
+          <details>
+            <summary>Subscribe for alerts</summary>
+            <div>
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+              Yo it goes in here. <br />
+            </div>
+          </details>
         </div>
       </h1>
     </div>
