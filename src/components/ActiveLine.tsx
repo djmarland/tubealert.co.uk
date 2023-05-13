@@ -1,4 +1,10 @@
-import { Component, createEffect, createSignal } from "solid-js";
+import {
+  Component,
+  createEffect,
+  createSignal,
+  onCleanup,
+  onMount,
+} from "solid-js";
 import { activeView, setActiveView } from "../view.context";
 import { Line, getLineByUrlKey } from "../services/Line";
 import Close from "./Icons/Close";
@@ -14,8 +20,28 @@ export const ActiveLine: Component = () => {
     }
   });
 
+  let ref: HTMLDivElement;
+  const handleClick = (event: MouseEvent) => {
+    // todo - this isn't working
+    if (
+      !ref.contains(event?.target as HTMLDivElement) &&
+      activeView() === null
+    ) {
+      setActiveView(null);
+    }
+  };
+
+  onMount(() => {
+    document.addEventListener("click", handleClick);
+  });
+
+  onCleanup(() => {
+    document.removeEventListener("click", handleClick);
+  });
+
   return (
     <div
+      ref={ref!}
       data-line={currentData()?.urlKey}
       class={`bg-stone-50/90 text-stone-950 dark:bg-stone-900/90 dark:text-stone-50 
       backdrop-blur-lg

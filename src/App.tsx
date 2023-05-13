@@ -2,7 +2,7 @@ import { Component, onCleanup } from "solid-js";
 
 import { Header } from "./components/Header";
 import { Lines } from "./components/Lines";
-import { setActiveView } from "./view.context";
+import { activeView, setActiveView } from "./view.context";
 import { ActiveLine } from "./components/ActiveLine";
 
 const App: Component = () => {
@@ -50,7 +50,11 @@ const App: Component = () => {
           </symbol>
         </svg>
       </div>
-      <div class="grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen">
+      <div
+        class={`grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen transition-all ${
+          activeView() && "brightness-50"
+        }`}
+      >
         <Header />
         <Lines />
       </div>
