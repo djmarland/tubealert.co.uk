@@ -1,20 +1,11 @@
-import { Component, onCleanup } from "solid-js";
+import { Component } from "solid-js";
 
 import { Header } from "./components/Header";
 import { Lines } from "./components/Lines";
-import { activeView, setActiveView } from "./view.context";
-import { ActiveLine } from "./components/ActiveLine";
+import { activeView } from "./view.context";
+import { ActivePage } from "./components/ActivePage";
 
 const App: Component = () => {
-  const onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      setActiveView(null);
-    }
-  };
-  document.addEventListener("keydown", onKeyDown);
-  onCleanup(() => document.removeEventListener("keydown", onKeyDown));
-
   return (
     <>
       <div style="display:none">
@@ -50,15 +41,11 @@ const App: Component = () => {
           </symbol>
         </svg>
       </div>
-      <div
-        class={`grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen transition-all ${
-          activeView() && "brightness-50"
-        }`}
-      >
+      <div class="grid grid-rows-[48px_1fr] h-screen lg:h-auto max-h-screen">
         <Header />
         <Lines />
       </div>
-      <ActiveLine />
+      <ActivePage />
     </>
   );
 };
