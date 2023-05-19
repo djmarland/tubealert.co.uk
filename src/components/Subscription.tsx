@@ -118,7 +118,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       <summary class="border-y cursor-pointer text-lg py-1 mb-1">
         Alert me of {props.line.name} disruptions (0)
       </summary>
-      <form class="pb-[80px]">
+      <form class="pb-[120px]">
         <fieldset>
           <legend class="z-20 flex gap-2 justify-between items-center mb-1 fixed bottom-0 left-1 right-1 bg-body-background rounded-lg p-0.5 pl-1">
             Choose which hours you wish to be notified of disruptions for this
