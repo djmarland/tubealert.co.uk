@@ -16,10 +16,11 @@ export const ActiveLine: Component<{ lineKey: string }> = (props) => {
   return (
     <Show when={currentData()}>
       <ActivePagePanel title={(currentData() as Line).name}>
-        <h2 class="text-xl">Good Service</h2>
-        <p>Delays in places</p>
-        <hr />
-        <Subscription lineKey={props.lineKey} />
+        <div class="pb-1">
+          <h2 class="text-xl">Good Service</h2>
+          <p>Delays in places</p>
+        </div>
+        <Subscription line={currentData() as Line} />
       </ActivePagePanel>
     </Show>
   );

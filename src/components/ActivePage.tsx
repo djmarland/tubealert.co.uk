@@ -24,7 +24,7 @@ export const ActivePage: Component = () => {
       fixed bottom-0 left-0 w-screen
       rounded-t-xl  lg:rounded-tr-none lg:rounded-l-xl
       lg:top-0 lg:left-auto lg:right-0
-      lg:max-w-[600px]
+      lg:max-w-[560px]
       will-change-transform
       transition-transform
       duration-300
@@ -49,7 +49,7 @@ export const ActivePagePanel = ({
   children,
 }: ParentProps<{ title: string }>) => {
   return (
-    <div>
+    <div class="flex flex-col max-h-full">
       <div
         class="bg-line-background text-line-foreground
     rounded-t-xl  lg:rounded-tr-none lg:rounded-tl-xl
@@ -61,7 +61,9 @@ export const ActivePagePanel = ({
           <Close />
         </A>
       </div>
-      <div class="p-1 space-y-1 max-h-[70vh] overflow-y-auto">{children}</div>
+      <div class="flex-1 p-1 space-y-1 max-h-[70vh] lg:max-h-none overflow-y-auto">
+        {children}
+      </div>
     </div>
   );
 };
