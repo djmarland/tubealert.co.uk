@@ -116,7 +116,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
   return (
     <details>
       <summary class="border-y cursor-pointer text-lg py-1 mb-1">
-        Alert me of {props.line.name} disruptions (0)
+        Alert me of disruptions (0)
       </summary>
       <form class="pb-[120px]">
         <fieldset>

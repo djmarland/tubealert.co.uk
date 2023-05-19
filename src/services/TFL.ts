@@ -1,5 +1,6 @@
 import KV from "./KV";
 import { Line, ALL_LINES, SEVERITIES } from "./Line";
+import { Status } from "./Status";
 
 export default class {
   #appId: string;
@@ -53,7 +54,7 @@ export default class {
   #makeStatusItem(originalLineData: Line, lineStatus) {
     const now = new Date();
     // create a copy of the lineData object
-    const lineData = Object.assign({}, originalLineData);
+    const lineData: Status = Object.assign({}, originalLineData);
 
     // set some defaults
     delete lineData.tflKey;

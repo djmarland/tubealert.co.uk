@@ -17,7 +17,6 @@ export const ActivePage: Component = () => {
         />
       )}
       <div
-        data-line={viewKey()}
         class={`bg-stone-50/90 text-stone-950 dark:bg-stone-900/90 dark:text-stone-50 
       backdrop-blur-lg
       shadow-[0_0_16px_0_rgba(0,0,0,0.5)]
@@ -44,9 +43,11 @@ export const ActivePage: Component = () => {
   );
 };
 
-export const ActivePagePanel = (props: ParentProps<{ title: string }>) => {
+export const ActivePagePanel = (
+  props: ParentProps<{ title: string; lineKey?: string }>
+) => {
   return (
-    <div class="flex flex-col max-h-full">
+    <div class="flex flex-col max-h-full" data-line={props.lineKey}>
       <div
         class="bg-line-background text-line-foreground
     rounded-t-xl  lg:rounded-tr-none lg:rounded-tl-xl

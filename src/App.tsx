@@ -2,10 +2,13 @@ import { Component } from "solid-js";
 
 import { Header } from "./components/Header";
 import { Lines } from "./components/Lines";
-import { activeView } from "./view.context";
 import { ActivePage } from "./components/ActivePage";
+import { updateStatus } from "./services/Status";
 
 const App: Component = () => {
+  updateStatus();
+  setInterval(updateStatus, 1000 * 120);
+
   return (
     <>
       <div style="display:none">

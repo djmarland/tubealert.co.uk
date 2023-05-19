@@ -4,6 +4,7 @@ import { ALL_LINES } from "../services/Line";
 import Alert from "./Icons/Alert";
 import ChevronRight from "./Icons/ChevronRight";
 import { A } from "@solidjs/router";
+import { getLineStatus } from "../services/Status";
 
 export const Lines = () => {
   return (
@@ -17,11 +18,13 @@ export const Lines = () => {
           >
             <div class="flex-1">
               <h2>{line.name}</h2>
-              <p>Good Service</p>
+              <p>{getLineStatus(line.urlKey)?.statusSummary || "Fetching…"}</p>
             </div>
-            <div class="w-[42px] h-[42px]">
-              <Alert />
-            </div>
+            {getLineStatus(line.urlKey)?.isDisrupted && (
+              <div class="w-[42px] h-[42px]">
+                <Alert />
+              </div>
+            )}
             <div class="w-[12px] h-[12px] opacity-50">
               <ChevronRight />
             </div>
