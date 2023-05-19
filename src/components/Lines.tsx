@@ -7,7 +7,7 @@ import { A } from "@solidjs/router";
 
 export const Lines = () => {
   return (
-    <menu class="overflow-y-auto lg:columns-2 gap-0 mb-[env(safe-area-inset-bottom)]">
+    <menu class="overflow-y-auto lg:columns-2 gap-0 pb-[env(safe-area-inset-bottom)]">
       {ALL_LINES.map((line: Line) => (
         <li data-line={line.urlKey}>
           <A
