@@ -1,6 +1,7 @@
 import { Component, Show, createEffect, createSignal } from "solid-js";
 import { Line, getLineByUrlKey } from "../services/Line";
 import { ActivePagePanel } from "./ActivePage";
+import { Subscription } from "./Subscription";
 
 export const ActiveLine: Component<{ lineKey: string }> = (props) => {
   const [currentData, setCurrentData] = createSignal<Line | null | undefined>(
@@ -18,25 +19,7 @@ export const ActiveLine: Component<{ lineKey: string }> = (props) => {
         <h2 class="text-xl">Good Service</h2>
         <p>Delays in places</p>
         <hr />
-        <details>
-          <summary>Subscribe for alerts</summary>
-          <div>
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-            Yo it goes in here. <br />
-          </div>
-        </details>
+        <Subscription lineKey={props.lineKey} />
       </ActivePagePanel>
     </Show>
   );
