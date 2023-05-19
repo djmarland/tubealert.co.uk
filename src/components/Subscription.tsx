@@ -95,10 +95,11 @@ const getTable = () => {
 
 export const Subscription: Component<{ line: Line }> = (props) => {
   const isSupported =
-    typeof window !== "undefined" &&
-    "navigator" in window &&
-    "serviceWorker" in window.navigator &&
-    "PushManager" in window;
+    true || // temporarilly re-enable so I can test it
+    (typeof window !== "undefined" &&
+      "navigator" in window &&
+      "serviceWorker" in window.navigator &&
+      "PushManager" in window);
 
   if (!isSupported) {
     // todo - test if this needs a detailed message for iOS - once there is a manifest and service worker
