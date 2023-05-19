@@ -44,10 +44,7 @@ export const ActivePage: Component = () => {
   );
 };
 
-export const ActivePagePanel = ({
-  title,
-  children,
-}: ParentProps<{ title: string }>) => {
+export const ActivePagePanel = (props: ParentProps<{ title: string }>) => {
   return (
     <div class="flex flex-col max-h-full">
       <div
@@ -56,13 +53,13 @@ export const ActivePagePanel = ({
     flex justify-between gap-1 items-center
     py-0.5 pl-1 pr-0.5"
       >
-        <h1 class="text-2xl font-thin">{title}</h1>
+        <h1 class="text-2xl font-thin">{props.title}</h1>
         <A class="w-3 h-3 p-0.5 inline-block" href="/" title="Close">
           <Close />
         </A>
       </div>
       <div class="flex-1 p-1 space-y-1 max-h-[70vh] lg:max-h-none overflow-y-auto">
-        {children}
+        {props.children}
       </div>
     </div>
   );
