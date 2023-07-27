@@ -26,7 +26,7 @@ const getRow = (hour: number) => {
             {days[day]} {hour}:00
           </span>
         </label>
-      </td>
+      </td>,
     );
   }
 
@@ -120,9 +120,12 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       </summary>
       <form class="pb-[120px]">
         <fieldset>
-          <legend class="z-20 flex gap-2 justify-between items-center mb-1 fixed 
-          -bottom-1 left-1 right-1 bg-body-background rounded-t-lg p-0.5 pl-1 border
-           border-solid border-b-0 border-current">
+          <legend
+            class="z-20 flex gap-2 justify-between items-center fixed 
+           bottom-1 left-1 right-1 bg-body-background rounded-lg p-0.5 pl-1 border
+           border-solid border-current
+           mb-[env(safe-area-inset-bottom, 0)]"
+          >
             Set which hours you wish to be notified for this line
             <button
               type="submit"

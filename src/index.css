@@ -65,7 +65,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     * {
-      transition: none!important;
+      transition: none !important;
     }
   }
 
@@ -81,7 +81,7 @@
   }
   #root {
     width: 100%;
-    max-width: 992px;
+    max-width: 1024px;
   }
 
   body {

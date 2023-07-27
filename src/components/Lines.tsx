@@ -8,7 +8,7 @@ import { getLineStatus } from "../services/Status";
 
 export const Lines = () => {
   return (
-    <menu class="overflow-y-auto lg:columns-2 gap-0 pb-[100px]">
+    <menu class="overflow-y-auto lg:columns-2 gap-0 pb-[100px] lg:pb-0">
       {ALL_LINES.map((line: Line) => (
         <li data-line={line.urlKey}>
           <A
