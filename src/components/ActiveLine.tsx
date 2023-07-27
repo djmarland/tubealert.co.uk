@@ -19,7 +19,7 @@ export const ActiveLine: Component<{ lineKey: string }> = (props) => {
     }
   });
   return (
-    <Show when={currentData()}>
+    <Show when={currentData()} fallback={<NotFound />}>
       <ActivePagePanel
         title={(currentData() as Line).name}
         lineKey={currentData()?.urlKey}
@@ -48,3 +48,9 @@ export const ActiveLine: Component<{ lineKey: string }> = (props) => {
     </Show>
   );
 };
+
+const NotFound = () => (
+  <ActivePagePanel title="404">
+    <p>That URL does not exist</p>
+  </ActivePagePanel>
+);
