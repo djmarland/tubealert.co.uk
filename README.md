@@ -1,3 +1,10 @@
 ## TubeAlert 3.0
 
-Using SolidJS
+Cloudflare functions
+
+
+### Running locally
+
+* Create .dev.vars
+* Ensure the correct version of node
+* Run `npm start`

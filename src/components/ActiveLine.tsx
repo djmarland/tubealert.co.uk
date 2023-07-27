@@ -29,8 +29,19 @@ export const ActiveLine: Component<{ lineKey: string }> = (props) => {
             {currentStatus()?.statusSummary || "Fetching…"}
           </h2>
           {currentStatus()?.latestStatus.descriptions.map((description) => (
-            <p>{description}</p>
+            <p class="mb-1">{description}</p>
           ))}
+          {currentStatus()?.updatedAt && (
+            <p>
+              Updated:{" "}
+              {new Date(
+                currentStatus()?.updatedAt as string
+              ).toLocaleDateString()}{" "}
+              {new Date(
+                currentStatus()?.updatedAt as string
+              ).toLocaleTimeString()}
+            </p>
+          )}
         </div>
         <Subscription line={currentData() as Line} />
       </ActivePagePanel>

@@ -1,7 +1,6 @@
 import DI, { AppEnv } from "../../src/services/DI";
 
 export const onRequest: PagesFunction<AppEnv> = async (context) => {
-  console.log(context.env);
   const di = new DI(context.env);
   const content = JSON.stringify(await di.getTFL().getCurrentStatus());
   return new Response(content, {

@@ -48,7 +48,7 @@ const getTable = () => {
 
   return (
     <table class="w-full">
-      <thead class="bg-body-background sticky top-0 z-10">
+      <thead class="bg-body-background sticky -top-1 z-10">
         <tr>
           <th class="w-[calc(100%/8)] py-0.5" />
           <th class="w-[calc(100%/8)] py-0.5">
@@ -120,7 +120,9 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       </summary>
       <form class="pb-[120px]">
         <fieldset>
-          <legend class="z-20 flex gap-2 justify-between items-center mb-1 fixed bottom-0 left-1 right-1 bg-body-background rounded-lg p-0.5 pl-1">
+          <legend class="z-20 flex gap-2 justify-between items-center mb-1 fixed 
+          -bottom-1 left-1 right-1 bg-body-background rounded-t-lg p-0.5 pl-1 border
+           border-solid border-b-0 border-current">
             Choose which hours you wish to be notified of disruptions for this
             line and hit save.
             <button
