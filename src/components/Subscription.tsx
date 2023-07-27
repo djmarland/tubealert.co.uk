@@ -123,8 +123,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
           <legend class="z-20 flex gap-2 justify-between items-center mb-1 fixed 
           -bottom-1 left-1 right-1 bg-body-background rounded-t-lg p-0.5 pl-1 border
            border-solid border-b-0 border-current">
-            Choose which hours you wish to be notified of disruptions for this
-            line and hit save.
+            Set which hours you wish to be notified for this line
             <button
               type="submit"
               class="bg-line-background text-line-foreground border border-line-foreground rounded-md px-1 py-0.5"
