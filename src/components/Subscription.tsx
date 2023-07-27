@@ -124,7 +124,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
             class="z-20 flex gap-2 justify-between items-center fixed 
            bottom-1 left-1 right-1 bg-body-background rounded-lg p-0.5 pl-1 border
            border-solid border-current
-           mb-[env(safe-area-inset-bottom, 0)]"
+           mb-[env(safe-area-inset-bottom)]"
           >
             Set which hours you wish to be notified for this line
             <button
