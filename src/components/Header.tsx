@@ -4,13 +4,15 @@ import Settings from "./Icons/Settings";
 import { A } from "@solidjs/router";
 
 export const Header = () => {
-
   const doUpdate = () => {
     const latest = latestStatus();
-    if (latest?.[0].updatedAt && (Date.parse(latest?.[0].updatedAt) < (Date.now() - (120 * 1000)))) {
+    if (
+      latest?.[0].updatedAt &&
+      Date.parse(latest?.[0].updatedAt) < Date.now() - 120 * 1000
+    ) {
       updateStatus();
     }
-  }
+  };
 
   return (
     <div class="bg-stone-800 text-stone-50 flex gap-1 justify-between items-center text-xl font-thin px-0.5 relative">

@@ -1,7 +1,12 @@
 import { Component } from "solid-js";
 import { Line } from "../services/Line";
+import { createStoredSignal } from "../utils/createStoredSignal";
+import {
+  SUBSCRIPTION_DATA_LOCALSTORAGE_KEY,
+  WeekSubscriptions,
+} from "../services/Subscriptions";
 
-const getRow = (hour: number) => {
+const getRow = (hour: number, subscriptions: WeekSubscriptions | null) => {
   const cols = [];
   const days = [
     "Sunday",
@@ -19,8 +24,12 @@ const getRow = (hour: number) => {
       <td class="relative py-[24px]">
         <label class="absolute inset-0 flex items-center justify-center">
           <input
+            name={`subscriptions-${i}-${hour}`}
             type="checkbox"
-            class=" w-[24px] h-[24px] accent-line-background"
+            data-set-day={i}
+            data-set-hour={hour}
+            class=" w-[36px] h-[36px] accent-line-background"
+            checked={subscriptions?.[i]?.[hour] === true}
           />
           <span class="sr-only">
             {days[day]} {hour}:00
@@ -40,10 +49,10 @@ const getRow = (hour: number) => {
   );
 };
 
-const getTable = () => {
+const getTable = (subscriptions: WeekSubscriptions | null) => {
   const rows = [];
   for (let i = 0; i <= 23; i += 1) {
-    rows.push(getRow(i));
+    rows.push(getRow(i, subscriptions));
   }
 
   return (
@@ -94,6 +103,10 @@ const getTable = () => {
 };
 
 export const Subscription: Component<{ line: Line }> = (props) => {
+  const [subscriptions, setSubscriptions] = createStoredSignal<{
+    [key: string]: WeekSubscriptions;
+  }>(SUBSCRIPTION_DATA_LOCALSTORAGE_KEY, {});
+
   const isSupported =
     true || // temporarilly re-enable so I can test it
     (typeof window !== "undefined" &&
@@ -113,12 +126,25 @@ export const Subscription: Component<{ line: Line }> = (props) => {
     );
   }
 
+  const saveSubscriptions = (evt: SubmitEvent, lineKey: string) => {
+    evt.preventDefault();
+    const data = new FormData(evt.target as any);
+    const newSubscriptions = { ...subscriptions };
+    const lineSubs = [];
+    data.forEach((value, name) => {});
+
+    setSubscriptions(newSubscriptions);
+  };
+
   return (
     <details>
       <summary class="border-y cursor-pointer text-lg py-1 mb-1">
         Alert me of disruptions (0)
       </summary>
-      <form class="pb-[120px]">
+      <form
+        class="pb-[120px]"
+        onSubmit={(evt) => saveSubscriptions(evt, props.line.urlKey)}
+      >
         <fieldset>
           <legend
             class="z-20 flex gap-2 justify-between items-center fixed 
@@ -134,7 +160,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
               Save
             </button>
           </legend>
-          {getTable()}
+          {getTable(subscriptions()[props.line?.urlKey] || null)}
         </fieldset>
       </form>
     </details>

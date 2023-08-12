@@ -6,11 +6,14 @@ export default defineConfig({
   plugins: [
     solidPlugin(),
     VitePWA({
+      srcDir: "src",
+      filename: "sw.ts",
       registerType: "autoUpdate",
-      injectRegister: "inline",
-      devOptions: {
-        enabled: true,
-      },
+      injectRegister: null,
+      // devOptions: {
+      //   enabled: true,
+      // },
+      strategies: "injectManifest",
       manifest: {
         name: "TubeAlert",
         short_name: "TubeAlert",

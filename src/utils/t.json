@@ -1,0 +1,36 @@
+{
+  "jubilee-line": [
+    null,
+    null,
+    null,
+    [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      true,
+      null,
+      true,
+      null,
+      true,
+      null,
+      null,
+      null,
+      null,
+      true
+    ],
+    null,
+    null,
+    [null, null, null, null, null, null, null, null, null, null, null, true]
+  ],
+  "circle-line": [
+    null,
+    null,
+    null,
+    [true, null, null, null, null, null, null, null, true],
+    [null, null, null, null, null, null, null, true]
+  ]
+}

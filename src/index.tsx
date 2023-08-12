@@ -9,8 +9,12 @@ const root = document.getElementById("root");
 
 if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   throw new Error(
-    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got mispelled?"
+    "Root element not found. Did you forget to add it to your index.html? Or maybe the id attribute got mispelled?",
   );
+}
+
+if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js", { scope: "./" });
 }
 
 render(
@@ -19,5 +23,5 @@ render(
       <App />
     </Router>
   ),
-  root!
+  root!,
 );
