@@ -1,4 +1,5 @@
 import KV from "./KV";
+import Subscriptions from "./Subscriptions";
 import TFL from "./TFL";
 
 export interface AppEnv {
@@ -11,6 +12,7 @@ export default class {
   #env: AppEnv;
   #kvInstance;
   #tflInstance;
+  #subscriptionsInstance;
 
   constructor(env: AppEnv) {
     this.#env = env;
@@ -28,9 +30,16 @@ export default class {
       this.#tflInstance = new TFL(
         this.#env.TFL_APP_ID,
         this.#env.TFL_APP_KEY,
-        this.getKv()
+        this.getKv(),
       );
     }
     return this.#tflInstance;
+  }
+
+  getSubscriptions() {
+    if (!this.#subscriptionsInstance) {
+      this.#subscriptionsInstance = new Subscriptions(this.getKv());
+    }
+    return this.#subscriptionsInstance;
   }
 }

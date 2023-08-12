@@ -5,6 +5,9 @@ import {
   SUBSCRIPTION_DATA_LOCALSTORAGE_KEY,
   WeekSubscriptions,
 } from "../services/Subscriptions";
+import { base64UrlToUint8Array } from "../utils/base64UrlToUint8Array";
+
+const INPUT_FIELD_NAME = "subscriptions[]";
 
 const getRow = (hour: number, subscriptions: WeekSubscriptions | null) => {
   const cols = [];
@@ -17,6 +20,9 @@ const getRow = (hour: number, subscriptions: WeekSubscriptions | null) => {
     "Friday",
     "Saturday",
   ];
+
+  const hourLabel = `${hour % 12 || 12}${hour >= 12 ? "pm" : "am"}`;
+
   for (let i = 1; i <= 7; i += 1) {
     const day = i === 7 ? 0 : i; // sunday is zero
     const inputID = `time-${day}-${hour}`;
@@ -24,22 +30,19 @@ const getRow = (hour: number, subscriptions: WeekSubscriptions | null) => {
       <td class="relative py-[24px]">
         <label class="absolute inset-0 flex items-center justify-center">
           <input
-            name={`subscriptions-${i}-${hour}`}
+            name={INPUT_FIELD_NAME}
             type="checkbox"
-            data-set-day={i}
-            data-set-hour={hour}
+            value={`${i}-${hour}`}
             class=" w-[36px] h-[36px] accent-line-background"
             checked={subscriptions?.[i]?.[hour] === true}
           />
           <span class="sr-only">
-            {days[day]} {hour}:00
+            {days[day]} {hourLabel}
           </span>
         </label>
       </td>,
     );
   }
-
-  const hourLabel = `${hour % 12 || 12}${hour >= 12 ? "pm" : "am"}`;
 
   return (
     <tr class="even:bg-body-background">
@@ -102,10 +105,15 @@ const getTable = (subscriptions: WeekSubscriptions | null) => {
   );
 };
 
+type Subscriptions = {
+  [key: string]: WeekSubscriptions;
+};
+
 export const Subscription: Component<{ line: Line }> = (props) => {
-  const [subscriptions, setSubscriptions] = createStoredSignal<{
-    [key: string]: WeekSubscriptions;
-  }>(SUBSCRIPTION_DATA_LOCALSTORAGE_KEY, {});
+  const [subscriptions, setSubscriptions] = createStoredSignal<Subscriptions>(
+    SUBSCRIPTION_DATA_LOCALSTORAGE_KEY,
+    {},
+  );
 
   const isSupported =
     true || // temporarilly re-enable so I can test it
@@ -129,11 +137,61 @@ export const Subscription: Component<{ line: Line }> = (props) => {
   const saveSubscriptions = (evt: SubmitEvent, lineKey: string) => {
     evt.preventDefault();
     const data = new FormData(evt.target as any);
-    const newSubscriptions = { ...subscriptions };
-    const lineSubs = [];
-    data.forEach((value, name) => {});
+    const newSubscriptions: Subscriptions = { ...subscriptions };
+    const timeSlots: WeekSubscriptions = [];
+
+    data.forEach((value, name) => {
+      if (name !== INPUT_FIELD_NAME) {
+        return;
+      }
+      const [day, hour] = value
+        .toString()
+        .split("-")
+        .map((i) => parseInt(i));
+      if (!timeSlots[day]) {
+        timeSlots[day] = [];
+      }
+      timeSlots[day][hour] = true;
+    });
+
+    newSubscriptions[lineKey] = timeSlots;
 
     setSubscriptions(newSubscriptions);
+    return;
+
+    const swOptions = {
+      userVisibleOnly: true,
+      applicationServerKey: base64UrlToUint8Array(
+        "BKSO9McPgFJ6DcngM1wB2hxI_rnLoPs_JhyRh8bFJw6BBX-QFxGKYnTSVtyLu4G3Vc3jihaDUIZWiaYqEtvs_dg",
+      ),
+    };
+
+    window.navigator.serviceWorker.ready
+      .then((serviceWorkerRegistration) =>
+        serviceWorkerRegistration.pushManager.subscribe(swOptions),
+      )
+      .then((subscription) => {
+        const postData = {
+          userID: subscription.endpoint,
+          lineID: lineKey,
+          timeSlots,
+          subscription,
+        };
+        return fetch(API_PATH_SUBSCRIBE, {
+          method: "post",
+          body: JSON.stringify(postData),
+        });
+      })
+      .then((response) => response.json())
+      .then(() => {
+        setSubscriptions(newSubscriptions);
+      })
+      .catch((e) => {
+        window.alert(
+          "An error occurred. Please try deleting all subscriptions on the settings page and try again",
+        );
+        console.error(e);
+      });
   };
 
   return (
