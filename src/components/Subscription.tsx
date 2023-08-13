@@ -156,9 +156,6 @@ export const Subscription: Component<{ line: Line }> = (props) => {
 
     newSubscriptions[lineKey] = timeSlots;
 
-    setSubscriptions(newSubscriptions);
-    return;
-
     const swOptions = {
       userVisibleOnly: true,
       applicationServerKey: base64UrlToUint8Array(
@@ -177,7 +174,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
           timeSlots,
           subscription,
         };
-        return fetch(API_PATH_SUBSCRIBE, {
+        return fetch("/subscribe", {
           method: "post",
           body: JSON.stringify(postData),
         });
