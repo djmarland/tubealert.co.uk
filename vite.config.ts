@@ -10,9 +10,10 @@ export default defineConfig({
       filename: "sw.ts",
       registerType: "autoUpdate",
       injectRegister: null,
-      // devOptions: {
-      //   enabled: true,
-      // },
+      devOptions: {
+        enabled: true,
+        type: "module",
+      },
       strategies: "injectManifest",
       manifest: {
         name: "TubeAlert",

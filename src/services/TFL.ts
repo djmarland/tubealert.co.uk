@@ -17,19 +17,44 @@ export default class {
   }
 
   async getCurrentStatus() {
+    return this.#kv.getValue(this.#KV_KEY);
+  }
+
+  async updateAndCheckStatus() {
     const saved = await this.#kv.getValue(this.#KV_KEY);
     if (
       saved?.[0]?.["updatedAt"] &&
       Date.parse(saved[0].updatedAt) > Date.now() - this.#KV_TTL
     ) {
-      return saved;
+      console.log("Still in cache. Not doing anything");
+      return [];
     }
-    const newData = await this.fetchCurrentStatus();
+    const newData = await this.#fetchCurrentStatus();
     await this.#kv.setValue(this.#KV_KEY, newData);
-    return newData;
+    return this.#findChangedLines(saved, newData);
   }
 
-  async fetchCurrentStatus() {
+  #findChangedLines(oldStatuses, newStatuses) {
+    return ALL_LINES.map((lineData) => {
+      const oldStatus = oldStatuses?.find(
+        (status) => status.urlKey === lineData.urlKey,
+      );
+      const newStatus = newStatuses?.find(
+        (status) => status.urlKey === lineData.urlKey,
+      );
+      if (
+        true
+        // oldStatus &&
+        // newStatus &&
+        // oldStatus.statusSummary !== newStatus.statusSummary
+      ) {
+        return newStatus;
+      }
+      return null;
+    }).filter(Boolean);
+  }
+
+  async #fetchCurrentStatus() {
     const url =
       "https://api.tfl.gov.uk/Line/Mode/tube,dlr,elizabeth-line,overground/Status" +
       `?app_id=${this.#appId}` +
@@ -89,7 +114,7 @@ export default class {
         .map((s) => s.reason || null)
         .filter(
           (value, index, self) =>
-            value !== null && self.indexOf(value) === index
+            value !== null && self.indexOf(value) === index,
         );
 
       lineData.latestStatus.isDisrupted = sortedStatuses.reduce(
@@ -102,7 +127,7 @@ export default class {
           }
           return value;
         },
-        false
+        false,
       );
       lineData.latestStatus.title = titles.join(", ");
       lineData.latestStatus.shortTitle = titles.slice(0, 2).join(", ");

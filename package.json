@@ -25,7 +25,9 @@
     "wrangler": "^3.5.0"
   },
   "dependencies": {
+    "@block65/webcrypto-web-push": "^0.3.0",
     "@solidjs/router": "^0.8.2",
+    "moment-timezone": "^0.5.43",
     "solid-js": "^1.6.10"
   },
   "engines": {

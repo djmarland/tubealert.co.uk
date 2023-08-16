@@ -1,3 +1,4 @@
+import moment, { Moment } from "moment-timezone";
 import KV from "./KV";
 import Subscriptions from "./Subscriptions";
 import TFL from "./TFL";
@@ -5,17 +6,28 @@ import TFL from "./TFL";
 export interface AppEnv {
   TFL_APP_ID: string;
   TFL_APP_KEY: string;
+  CONTACT_EMAIL: string;
+  PUBLIC_KEY: string;
+  PRIVATE_KEY: string;
   KV: KVNamespace;
 }
 
 export default class {
   #env: AppEnv;
-  #kvInstance;
-  #tflInstance;
-  #subscriptionsInstance;
+  #kvInstance: KV | undefined;
+  #tflInstance: TFL | undefined;
+  #subscriptionsInstance: Subscriptions | undefined;
+  #now: Moment | undefined;
 
   constructor(env: AppEnv) {
     this.#env = env;
+  }
+
+  getDateTime() {
+    if (!this.#now) {
+      this.#now = moment(new Date()).tz("Europe/London");
+    }
+    return this.#now;
   }
 
   getKv() {
@@ -38,7 +50,14 @@ export default class {
 
   getSubscriptions() {
     if (!this.#subscriptionsInstance) {
-      this.#subscriptionsInstance = new Subscriptions(this.getKv());
+      this.#subscriptionsInstance = new Subscriptions(
+        this.getKv(),
+        this.getDateTime(),
+        {
+          publicKey: this.#env.PUBLIC_KEY,
+          privateKey: this.#env.PRIVATE_KEY,
+        },
+      );
     }
     return this.#subscriptionsInstance;
   }

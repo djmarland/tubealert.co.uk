@@ -16,6 +16,9 @@ export default class {
   }
 
   setValue(key, value) {
+    if (value === undefined) {
+      return this.#kv.delete(key);
+    }
     return this.#kv.put(key, JSON.stringify(value));
   }
 }

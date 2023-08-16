@@ -13,8 +13,10 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js", { scope: "./" });
+if ("serviceWorker" in navigator) {
+  const url =
+    process.env.NODE_ENV === "production" ? "sw.js" : "/dev-sw.js?dev-sw";
+  navigator.serviceWorker.register(url, { scope: "/" });
 }
 
 render(
