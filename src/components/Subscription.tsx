@@ -174,12 +174,11 @@ export const Subscription: Component<{ line: Line }> = (props) => {
           timeSlots,
           subscription,
         };
-        return fetch("/subscribe", {
+        return fetch("/api/subscribe", {
           method: "post",
           body: JSON.stringify(postData),
         });
       })
-      .then((response) => response.json())
       .then(() => {
         setSubscriptions(newSubscriptions);
       })
