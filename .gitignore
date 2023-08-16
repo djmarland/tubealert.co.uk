@@ -2,3 +2,5 @@ node_modules
 dist
 dev-dist
 .dev.vars
+.wrangler
+wrangler.toml

@@ -6,7 +6,13 @@ export default class {
   }
 
   async getValue(key) {
-    return JSON.parse(await this.#kv.get(key));
+    try {
+      return JSON.parse(await this.#kv.get(key));
+    } catch (e) {
+      console.error(e);
+      // unparsable data is null
+      return null;
+    }
   }
 
   setValue(key, value) {
