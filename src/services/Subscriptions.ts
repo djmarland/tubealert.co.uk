@@ -2,7 +2,7 @@ import { Moment } from "moment-timezone";
 import {
   PushMessage,
   VapidKeys,
-  buildPushPayload,
+  // buildPushPayload,
 } from "@block65/webcrypto-web-push";
 import KV from "./KV";
 export const SUBSCRIPTION_DATA_LOCALSTORAGE_KEY = "subscriptions";
@@ -89,9 +89,9 @@ export default class {
       return; // nothing to do
     }
 
-    const init = await buildPushPayload(payload, subscription, this.#keys);
-    const res = await fetch(subscription.endpoint, init);
-    console.log(res);
+    // const init = await buildPushPayload(payload, subscription, this.#keys);
+    // const res = await fetch(subscription.endpoint, init);
+    // console.log(res);
   }
 
   async #saveLineSlots(
