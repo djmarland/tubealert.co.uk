@@ -89,9 +89,9 @@ export default class {
       return; // nothing to do
     }
 
-    // const init = await buildPushPayload(payload, subscription, this.#keys);
-    // const res = await fetch(subscription.endpoint, init);
-    // console.log(res);
+    const init = await buildPushPayload(payload, subscription, this.#keys);
+    const res = await fetch(subscription.endpoint, init);
+    console.log(res);
   }
 
   async #saveLineSlots(
