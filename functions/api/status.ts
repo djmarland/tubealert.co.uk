@@ -4,9 +4,12 @@ export const onRequest: PagesFunction<AppEnv> = async ({ env }) => {
   const di = new DI(env);
   const content = JSON.stringify(await di.getTFL().getCurrentStatus());
 
-  if (false) {
-    import("node:crypto");
-  }
+  const impl = await (typeof globalThis !== "undefined" &&
+  (globalThis as any).crypto
+    ? (globalThis as any).crypto
+    : import("node:crypto"));
+
+  console.log(impl);
 
   return new Response(content, {
     headers: {
