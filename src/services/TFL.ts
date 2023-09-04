@@ -27,7 +27,7 @@ export default class {
       Date.parse(saved[0].updatedAt) > Date.now() - this.#KV_TTL
     ) {
       console.log("Still in cache. Not doing anything");
-      return [];
+      // return [];
     }
     const newData = await this.#fetchCurrentStatus();
     await this.#kv.setValue(this.#KV_KEY, newData);

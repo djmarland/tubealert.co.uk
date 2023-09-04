@@ -1,8 +1,8 @@
 import { Moment } from "moment-timezone";
 import {
-  PushMessage,
-  VapidKeys,
-  // buildPushPayload,
+  type PushMessage,
+  type VapidKeys,
+  buildPushPayload,
 } from "@block65/webcrypto-web-push";
 import KV from "./KV";
 export const SUBSCRIPTION_DATA_LOCALSTORAGE_KEY = "subscriptions";
@@ -75,23 +75,45 @@ export default class {
         //   this.assetManifest[`icon-${lineData.urlKey}.png`],
         tag: `/`,
       },
+      options: {
+        ttl: 60,
+      },
     };
 
-    Object.keys(slotData).forEach((userHash) => {
-      this.#notify(userHash, payload);
-      console.log("notifying " + userHash);
-    });
+    for (const userHash in slotData) {
+      await this.#notify(userHash, payload);
+      console.log("notified " + userHash);
+    }
   }
 
   async #notify(userHash: string, payload: string) {
     const subscription = await this.#getSubscription(userHash);
+    console.log("it is the sub", JSON.stringify(subscription));
     if (!subscription) {
+      console.log("why are we in here?!");
       return; // nothing to do
     }
 
+    console.log("building payload", decodeURI(subscription.endpoint));
     const init = await buildPushPayload(payload, subscription, this.#keys);
-    const res = await fetch(subscription.endpoint, init);
-    console.log(res);
+    console.log(JSON.stringify(init));
+    const res = await fetch(decodeURI(subscription.endpoint), init);
+    console.log("status", res.status, res.ok, await res?.text());
+    // console.log(init, res.status, JSON.stringify(await res.json()));
+
+    /* todo - remove if 404 or 410 received 
+
+      if (e.statusCode === 410 || e.statusCode === 404) {
+                // delete invalid registration
+                return Subscription.remove({endpoint: sub.endpoint}).exec()
+                    .then(function(sub) {
+                        console.log('Deleted: ' + sub.endpoint);
+                    })
+                    .catch(function(sub) {
+                        console.error('Failed to delete: ' + sub.endpoint);
+                    });
+            }
+            */
   }
 
   async #saveLineSlots(
@@ -172,6 +194,7 @@ export default class {
     const result = await this.#kv.getValue(
       `${this.#KV_KEY_USER_PREFIX}-${userHash}`,
     );
+    console.log("subscription retrieved: ", result);
     return result || null;
   }
 }

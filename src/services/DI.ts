@@ -54,6 +54,7 @@ export default class {
         this.getKv(),
         this.getDateTime(),
         {
+          subject: `mailto:${this.#env.CONTACT_EMAIL}`,
           publicKey: this.#env.PUBLIC_KEY,
           privateKey: this.#env.PRIVATE_KEY,
         },
