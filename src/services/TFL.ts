@@ -1,20 +1,16 @@
-import KV from "./KV";
 import { Line, ALL_LINES, SEVERITIES } from "./Line";
 import { Status } from "./Status";
 
 export default class {
   #appId: string;
   #appKey: string;
-  #kv: KV;
   #db: D1Database;
 
-  #KV_KEY = "CURRENT_STATUS";
   #UPDATE_TTL = 60 * 1000;
 
-  constructor(appId: string, appKey: string, kv: KV, db: D1Database) {
+  constructor(appId: string, appKey: string, db: D1Database) {
     this.#appId = appId;
     this.#appKey = appKey;
-    this.#kv = kv;
     this.#db = db;
   }
 
@@ -27,7 +23,6 @@ export default class {
     const updatedAt = await this.#db
       .prepare("SELECT updated_at FROM `line` LIMIT 1")
       .first<string>("updated_at");
-    console.log(updatedAt);
     if (updatedAt && Date.parse(updatedAt) > Date.now() - this.#UPDATE_TTL) {
       console.log("Still in cache. Not doing anything");
       return [];
@@ -36,11 +31,12 @@ export default class {
     if (!newData) {
       return [];
     }
+
+    const currentStatuses = await this.getCurrentStatus();
+
     // todo - fetch current status first in order to compare
     await this.#saveStatuses(newData);
-    await this.#kv.setValue(this.#KV_KEY, newData);
-    return [];
-    // return this.#findChangedLines(saved, newData);
+    return this.#findChangedLines(currentStatuses, newData);
   }
 
   async #saveStatuses(newStatuses: Status[]) {
@@ -60,8 +56,6 @@ export default class {
         ),
       ),
     );
-
-    console.log(rows);
   }
 
   #mapLineStatusFromDb(result: any): Status {
@@ -84,22 +78,25 @@ export default class {
     };
   }
 
-  #findChangedLines(oldStatuses, newStatuses) {
+  #findChangedLines(oldStatuses: Status[], newStatuses: Status[]) {
     return ALL_LINES.map((lineData) => {
       const oldStatus = oldStatuses?.find(
-        (status) => status.urlKey === lineData.urlKey,
+        (status) => status.tflKey === lineData.tflKey,
       );
       const newStatus = newStatuses?.find(
-        (status) => status.urlKey === lineData.urlKey,
+        (status) => status.tflKey === lineData.tflKey,
       );
       if (
-        true
-        // oldStatus &&
-        // newStatus &&
-        // oldStatus.statusSummary !== newStatus.statusSummary
+        oldStatus &&
+        newStatus &&
+        oldStatus.statusSummary !== newStatus.statusSummary
       ) {
+        console.log(lineData.tflKey + " has changed");
         return newStatus;
       }
+      // todo - testing - remove me before live
+      return newStatus;
+
       return null;
     }).filter(Boolean);
   }

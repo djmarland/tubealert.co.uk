@@ -1,5 +1,4 @@
 import moment, { Moment } from "moment-timezone";
-import KV from "./KV";
 import Subscriptions from "./Subscriptions";
 import TFL from "./TFL";
 
@@ -9,13 +8,11 @@ export interface AppEnv {
   CONTACT_EMAIL: string;
   PUBLIC_KEY: string;
   PRIVATE_KEY: string;
-  KV: KVNamespace; // todo - delete me
   DB: D1Database;
 }
 
 export default class {
   #env: AppEnv;
-  #kvInstance: KV | undefined;
   #tflInstance: TFL | undefined;
   #subscriptionsInstance: Subscriptions | undefined;
   #now: Moment | undefined;
@@ -31,19 +28,11 @@ export default class {
     return this.#now;
   }
 
-  getKv() {
-    if (!this.#kvInstance) {
-      this.#kvInstance = new KV(this.#env.KV);
-    }
-    return this.#kvInstance;
-  }
-
   getTFL() {
     if (!this.#tflInstance) {
       this.#tflInstance = new TFL(
         this.#env.TFL_APP_ID,
         this.#env.TFL_APP_KEY,
-        this.getKv(),
         this.#env.DB,
       );
     }
@@ -53,7 +42,7 @@ export default class {
   getSubscriptions() {
     if (!this.#subscriptionsInstance) {
       this.#subscriptionsInstance = new Subscriptions(
-        this.getKv(),
+        this.#env.DB,
         this.getDateTime(),
         {
           subject: `mailto:${this.#env.CONTACT_EMAIL}`,

@@ -5,7 +5,7 @@ export const onRequest: PagesFunction<AppEnv> = async ({ env }) => {
   const disruptedStatuses = await di.getTFL().updateAndCheckStatus();
 
   if (disruptedStatuses?.length) {
-    console.log(disruptedStatuses.length + " lines disrupted");
+    console.log(disruptedStatuses.length + " lines changed");
     await Promise.allSettled(
       disruptedStatuses.map((status) =>
         di.getSubscriptions().notifyUsers(status),

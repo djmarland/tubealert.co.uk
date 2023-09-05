@@ -119,11 +119,10 @@ export const Subscription: Component<{ line: Line }> = (props) => {
   );
 
   const isSupported =
-    true || // temporarilly re-enable so I can test it
-    (typeof window !== "undefined" &&
-      "navigator" in window &&
-      "serviceWorker" in window.navigator &&
-      "PushManager" in window);
+    typeof window !== "undefined" &&
+    "navigator" in window &&
+    "serviceWorker" in window.navigator &&
+    "PushManager" in window;
 
   if (!isSupported) {
     // todo - test if this needs a detailed message for iOS - once there is a manifest and service worker
@@ -202,7 +201,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       </summary>
       <form
         class="pb-[120px]"
-        onSubmit={(evt) => saveSubscriptions(evt, props.line.urlKey)}
+        onSubmit={(evt) => saveSubscriptions(evt, props.line.tflKey)}
       >
         <fieldset>
           <legend
@@ -219,7 +218,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
               Save
             </button>
           </legend>
-          {getTable(subscriptions()[props.line?.urlKey] || null)}
+          {getTable(subscriptions()[props.line?.tflKey] || null)}
         </fieldset>
       </form>
     </details>

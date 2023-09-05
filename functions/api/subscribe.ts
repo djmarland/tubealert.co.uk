@@ -11,10 +11,10 @@ export const onRequestPost: PagesFunction<AppEnv> = async ({
     await di
       .getSubscriptions()
       .setSubscriptions(
-        data?.userID,
-        data?.lineID,
-        data?.timeSlots,
-        data?.subscription,
+        data.userID,
+        data.lineID,
+        data.timeSlots,
+        data.subscription,
       );
   }
   return new Response(null, {
