@@ -1,4 +1,4 @@
-import { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import { Line } from "../services/Line";
 import { createStoredSignal } from "../utils/createStoredSignal";
 import {
@@ -110,6 +110,9 @@ type Subscriptions = {
 };
 
 export const Subscription: Component<{ line: Line }> = (props) => {
+  const [status, setStatus] = createSignal<string>(
+    "Set which hours you wish to be notified for this line",
+  );
   const [subscriptions, setSubscriptions] = createStoredSignal<Subscriptions>(
     SUBSCRIPTION_DATA_LOCALSTORAGE_KEY,
     {},
@@ -136,6 +139,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
 
   const saveSubscriptions = (evt: SubmitEvent, lineKey: string) => {
     evt.preventDefault();
+    setStatus("Saving…");
     const data = new FormData(evt.target as any);
     const newSubscriptions: Subscriptions = { ...subscriptions };
     const timeSlots: WeekSubscriptions = [];
@@ -181,6 +185,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       })
       .then(() => {
         setSubscriptions(newSubscriptions);
+        setStatus("Saved ✅");
       })
       .catch((e) => {
         window.alert(
@@ -206,7 +211,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
            border-solid border-current
            mb-[env(safe-area-inset-bottom)]"
           >
-            Set which hours you wish to be notified for this line
+            {status()}
             <button
               type="submit"
               class="bg-line-background text-line-foreground border border-line-foreground rounded-md px-1 py-0.5"

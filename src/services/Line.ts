@@ -2,7 +2,7 @@ export type Line = {
   name: string;
   shortName: string;
   urlKey: string;
-  tflKey?: string;
+  tflKey: string;
   displayOrder: number;
 };
 

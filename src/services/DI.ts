@@ -9,7 +9,8 @@ export interface AppEnv {
   CONTACT_EMAIL: string;
   PUBLIC_KEY: string;
   PRIVATE_KEY: string;
-  KV: KVNamespace;
+  KV: KVNamespace; // todo - delete me
+  DB: D1Database;
 }
 
 export default class {
@@ -43,6 +44,7 @@ export default class {
         this.#env.TFL_APP_ID,
         this.#env.TFL_APP_KEY,
         this.getKv(),
+        this.#env.DB,
       );
     }
     return this.#tflInstance;
