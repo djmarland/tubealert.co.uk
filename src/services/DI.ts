@@ -8,6 +8,7 @@ export interface AppEnv {
   CONTACT_EMAIL: string;
   PUBLIC_KEY: string;
   PRIVATE_KEY: string;
+  KEY: string;
   DB: D1Database;
 }
 

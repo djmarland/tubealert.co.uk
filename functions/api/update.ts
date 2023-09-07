@@ -1,7 +1,18 @@
 import DI, { AppEnv } from "../../src/services/DI";
 
-export const onRequest: PagesFunction<AppEnv> = async ({ env }) => {
+export const onRequestPost: PagesFunction<AppEnv> = async ({
+  env,
+  request,
+}) => {
   const di = new DI(env);
+  const key = await request.text();
+
+  if (!key || key !== env.KEY) {
+    return new Response("Not authorised", {
+      status: 403,
+    });
+  }
+
   const disruptedStatuses = await di.getTFL().updateAndCheckStatus();
 
   if (disruptedStatuses?.length) {
