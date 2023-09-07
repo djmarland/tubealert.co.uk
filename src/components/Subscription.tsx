@@ -6,6 +6,8 @@ import {
   WeekSubscriptions,
 } from "../services/Subscriptions";
 import { base64UrlToUint8Array } from "../utils/base64UrlToUint8Array";
+import { isSupported } from "../utils/pushManger";
+import { Button } from "./Button";
 
 const INPUT_FIELD_NAME = "subscriptions[]";
 
@@ -105,27 +107,20 @@ const getTable = (subscriptions: WeekSubscriptions | null) => {
   );
 };
 
-type Subscriptions = {
+export type Subscriptions = {
   [key: string]: WeekSubscriptions;
 };
 
+const STATUS_TEXT = "Set which hours you wish to be notified for this line";
+
 export const Subscription: Component<{ line: Line }> = (props) => {
-  const [status, setStatus] = createSignal<string>(
-    "Set which hours you wish to be notified for this line",
-  );
+  const [status, setStatus] = createSignal<string>(STATUS_TEXT);
   const [subscriptions, setSubscriptions] = createStoredSignal<Subscriptions>(
     SUBSCRIPTION_DATA_LOCALSTORAGE_KEY,
     {},
   );
 
-  const isSupported =
-    typeof window !== "undefined" &&
-    "navigator" in window &&
-    "serviceWorker" in window.navigator &&
-    "PushManager" in window;
-
   if (!isSupported) {
-    // todo - test if this needs a detailed message for iOS - once there is a manifest and service worker
     return (
       <p>
         <strong>
@@ -140,7 +135,7 @@ export const Subscription: Component<{ line: Line }> = (props) => {
     evt.preventDefault();
     setStatus("Saving…");
     const data = new FormData(evt.target as any);
-    const newSubscriptions: Subscriptions = { ...subscriptions };
+    const newSubscriptions: Subscriptions = { ...subscriptions() };
     const timeSlots: WeekSubscriptions = [];
 
     data.forEach((value, name) => {
@@ -185,10 +180,14 @@ export const Subscription: Component<{ line: Line }> = (props) => {
       .then(() => {
         setSubscriptions(newSubscriptions);
         setStatus("Saved ✅");
+        window.setTimeout(() => {
+          setStatus(STATUS_TEXT);
+        }, 3000);
       })
       .catch((e) => {
         window.alert(
-          "An error occurred. Please try deleting all subscriptions on the settings page and try again",
+          "An error occurred. Please try deleting all subscriptions on the settings page and try again. " +
+            "Note that for notifications to work on iOS, this app must be saved to your homescreen.",
         );
         console.error(e);
       });
@@ -211,14 +210,9 @@ export const Subscription: Component<{ line: Line }> = (props) => {
            mb-[env(safe-area-inset-bottom)]"
           >
             {status()}
-            <button
-              type="submit"
-              class="bg-line-background text-line-foreground border border-line-foreground rounded-md px-1 py-0.5"
-            >
-              Save
-            </button>
+            <Button type="submit">Save</Button>
           </legend>
-          {getTable(subscriptions()[props.line?.tflKey] || null)}
+          {getTable(subscriptions()?.[props.line?.tflKey] || null)}
         </fieldset>
       </form>
     </details>

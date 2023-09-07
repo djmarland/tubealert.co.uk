@@ -47,6 +47,12 @@ export default class {
     await this.#saveLineSlots(userID, lineID, timeSlots);
   }
 
+  async removeSubscriptions(userID: string) {
+    // delete the user and it should cascade to all the subscriptions
+    const stmt = this.#db.prepare("DELETE FROM `subscriber` WHERE `id` = ?");
+    return stmt.bind(userID).run();
+  }
+
   async notifyUsers(status: Status) {
     const subscriptions = await this.#db
       .prepare(
@@ -55,18 +61,7 @@ export default class {
       .bind(status.tflKey, this.#now.day(), parseInt(this.#now.format("HH")))
       .all();
 
-    const payload: PushMessage = {
-      data: {
-        title: status.name,
-        body: status.statusSummary,
-        // todo - main URL for images
-        icon: `https://tubealert-co-uk.pages.dev/imgs/icon-${status.urlKey}.png`,
-        tag: `/${status.urlKey}`,
-      },
-      options: {
-        ttl: 60,
-      },
-    };
+    const payload = this.#getPayload(status);
 
     await Promise.allSettled(
       (subscriptions.results ?? []).map((result: any) => {
@@ -76,6 +71,38 @@ export default class {
     );
   }
 
+  async notifyHourlyUsers(status: Status, now: Moment) {
+    const subscriptions = await this.#db
+      .prepare(
+        "SELECT `subscription` FROM `subscription` s INNER JOIN `subscriber` u ON s.`subscriber_id` = u.`id` WHERE s.`line_id` = ? AND s.`day` = ? AND s.`hour` = ? AND s.`is_block_start` = 1",
+      )
+      .bind(status.tflKey, now.day(), parseInt(now.format("HH")))
+      .all();
+
+    const payload = this.#getPayload(status);
+
+    return Promise.allSettled(
+      (subscriptions.results ?? []).map((result: any) => {
+        const subscription = JSON.parse(result.subscription);
+        return this.#notify(subscription, payload);
+      }),
+    );
+  }
+
+  #getPayload(status: Status): PushMessage {
+    return {
+      data: {
+        title: status.name,
+        body: status.statusSummary,
+        icon: `https://tubealert.co.uk/imgs/icon-${status.urlKey}.png`,
+        tag: `/${status.urlKey}`,
+      },
+      options: {
+        ttl: 60,
+      },
+    };
+  }
+
   async #notify(subscription: any, payload: string) {
     if (!subscription) {
       console.log("why are we in here?!");
@@ -83,22 +110,16 @@ export default class {
     }
 
     const init = await buildPushPayload(payload, subscription, this.#keys);
-    const res = await fetch(subscription.endpoint, init);
-    // console.log(init, res.status, JSON.stringify(await res.json()));
-
-    /* todo - remove if 404 or 410 received 
-
-      if (e.statusCode === 410 || e.statusCode === 404) {
-                // delete invalid registration
-                return Subscription.remove({endpoint: sub.endpoint}).exec()
-                    .then(function(sub) {
-                        console.log('Deleted: ' + sub.endpoint);
-                    })
-                    .catch(function(sub) {
-                        console.error('Failed to delete: ' + sub.endpoint);
-                    });
-            }
-            */
+    try {
+      const res = await fetch(subscription.endpoint, init);
+    } catch (e: any) {
+      const statusCode = e.statusCode;
+      if (statusCode !== 404 && statusCode !== 410) {
+        throw e;
+      }
+      // 404 or 410 means the subscription is no longer valid and we should remove it from our database
+      await this.removeSubscriptions(subscription.endpoint);
+    }
   }
 
   async #saveLineSlots(
@@ -106,10 +127,12 @@ export default class {
     lineId: string,
     timeSlots: WeekSubscriptions,
   ) {
-    // delete all the current subscriptions
+    // delete all the current subscriptions for this line
     await this.#db
-      .prepare("DELETE FROM `subscription` WHERE `subscriber_id` = ?")
-      .bind(userId)
+      .prepare(
+        "DELETE FROM `subscription` WHERE `subscriber_id` = ? AND `line_id` = ?",
+      )
+      .bind(userId, lineId)
       .run();
 
     const stmt = this.#db.prepare(
@@ -143,7 +166,9 @@ export default class {
       }
     }
 
-    return this.#db.batch(binds);
+    if (binds.length) {
+      return this.#db.batch(binds);
+    }
   }
 
   async #saveUser(userId: string, subscription: Subscription) {

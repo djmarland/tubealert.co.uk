@@ -19,6 +19,11 @@ export default class {
     return results.map(this.#mapLineStatusFromDb);
   }
 
+  async getDisrupted(): Promise<Status[]> {
+    const results = await this.getCurrentStatus();
+    return results.filter((status) => status.isDisrupted);
+  }
+
   async updateAndCheckStatus() {
     const updatedAt = await this.#db
       .prepare("SELECT updated_at FROM `line` LIMIT 1")
@@ -34,7 +39,6 @@ export default class {
 
     const currentStatuses = await this.getCurrentStatus();
 
-    // todo - fetch current status first in order to compare
     await this.#saveStatuses(newData);
     return this.#findChangedLines(currentStatuses, newData);
   }
@@ -94,8 +98,6 @@ export default class {
         console.log(lineData.tflKey + " has changed");
         return newStatus;
       }
-      // todo - testing - remove me before live
-      return newStatus;
 
       return null;
     }).filter(Boolean);
@@ -126,18 +128,18 @@ export default class {
   #makeStatusItem(originalLineData: Line, lineStatus) {
     const now = new Date();
     // create a copy of the lineData object
-    const lineData: Status = Object.assign({}, originalLineData);
+    const lineData: Partial<Status> = Object.assign({}, originalLineData);
 
     // set some defaults
-    lineData.isDisrupted = null;
+    lineData.isDisrupted = false;
     lineData.updatedAt = now.toISOString();
     lineData.statusSummary = "No Information";
     lineData.latestStatus = {
       updatedAt: now.toISOString(),
-      isDisrupted: null,
+      isDisrupted: false,
       title: "No Information",
       shortTitle: "No Information",
-      descriptions: null,
+      descriptions: [],
     };
 
     if (lineStatus) {
@@ -183,6 +185,6 @@ export default class {
       lineData.statusSummary = lineData.latestStatus.shortTitle;
     }
 
-    return lineData;
+    return lineData as Status;
   }
 }
