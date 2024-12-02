@@ -32,8 +32,8 @@ export const Unsubscribe = () => {
     return (
       <p>
         <strong>
-          Your browser does not support push notifications for disruption
-          alerts.
+          Your browser does not currenly support push notifications for disruption alerts. 
+          If on iOS, please add this webpage to your homescreen and try again from there.
         </strong>
       </p>
     );

@@ -52,6 +52,27 @@
     --color-line-dlr-background: #00bbb4;
     --color-line-dlr-foreground: #111111;
 
+    --color-line-liberty-background: #61686b;
+    --color-line-liberty-foreground: #ffffff;
+
+    --color-line-lioness-background: #ffa600;
+    --color-line-lioness-foreground: #111111;
+
+    --color-line-mildmay-background: #006fe6;
+    --color-line-mildmay-foreground: #ffffff;
+
+    --color-line-suffragette-background: #18a95d;
+    --color-line-suffragette-foreground: #111111;
+
+    --color-line-weaver-background: #9b0058;
+    --color-line-weaver-foreground: #ffffff;
+
+    --color-line-windrush-background: #ee7c0e;
+    --color-line-windrush-foreground: #ffffff;
+
+    --color-line-tram-background: #84B817;
+    --color-line-tram-foreground: #111111;
+
     color-scheme: light;
   }
 
@@ -163,5 +184,40 @@
   [data-line="dlr"] {
     --color-line-background: var(--color-line-dlr-background);
     --color-line-foreground: var(--color-line-dlr-foreground);
+  }
+
+  [data-line="liberty-line"] {
+    --color-line-background: var(--color-line-liberty-background);
+    --color-line-foreground: var(--color-line-liberty-foreground);
+  }
+
+  [data-line="lioness-line"] {
+    --color-line-background: var(--color-line-lioness-background);
+    --color-line-foreground: var(--color-line-lioness-foreground);
+  }
+
+  [data-line="mildmay-line"] {
+    --color-line-background: var(--color-line-mildmay-background);
+    --color-line-foreground: var(--color-line-mildmay-foreground);
+  }
+
+  [data-line="suffragette-line"] {
+    --color-line-background: var(--color-line-suffragette-background);
+    --color-line-foreground: var(--color-line-suffragette-foreground);
+  }
+
+  [data-line="weaver-line"] {
+    --color-line-background: var(--color-line-weaver-background);
+    --color-line-foreground: var(--color-line-weaver-foreground);
+  }
+
+  [data-line="windrush-line"] {
+    --color-line-background: var(--color-line-windrush-background);
+    --color-line-foreground: var(--color-line-windrush-foreground);
+  }
+
+  [data-line="tram"] {
+    --color-line-background: var(--color-line-tram-background);
+    --color-line-foreground: var(--color-line-tram-foreground);
   }
 }
