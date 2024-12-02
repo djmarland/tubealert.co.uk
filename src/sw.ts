@@ -11,7 +11,7 @@ cleanupOutdatedCaches();
 
 self.addEventListener("push", (event) => {
   if (!event.data) {
-    return; // dummy notification, used to update the service worker
+    return; // dummy notification, used to update the service worker where possible
   }
   const data = event.data.json();
   const title = data.title;

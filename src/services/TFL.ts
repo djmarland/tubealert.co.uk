@@ -105,7 +105,7 @@ export default class {
 
   async #fetchCurrentStatus() {
     const url =
-      "https://api.tfl.gov.uk/Line/Mode/tube,dlr,elizabeth-line,overground/Status" +
+      "https://api.tfl.gov.uk/Line/Mode/tube,dlr,elizabeth-line,overground,tram/Status" +
       `?app_id=${this.#appId}` +
       `&app_key=${this.#appKey}`;
 
