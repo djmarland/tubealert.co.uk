@@ -6,7 +6,7 @@ import { A, useLocation, useNavigate } from "@solidjs/router";
 import { Settings } from "./Settings";
 import { ActiveLine } from "./ActiveLine";
 import { DOMElement } from "solid-js/jsx-runtime";
-import { starLine } from "../services/Line";
+import { getStoredLineKeys, starLine, unstarLine } from "../services/Line";
 
 
 const ACTIVE_PANEL_ID = "active-panel";
@@ -59,16 +59,31 @@ let isX = false;
 
 const starIcon = (lineKey: string | undefined) => {
   if (!lineKey) return;
-  return (
-    <button id="star-line" class={"w-3 h-3 p-0.5"} onClick={(e) => clickStar(lineKey)}>
-      <Star />
-    </button >
-  )
+
+  if (getStoredLineKeys().indexOf(lineKey) !== -1) {
+    return (
+      <button id="unstar-line" class={"w-3 h-3 p-0.5"} onClick={(e) => clickUnstar(lineKey)}>
+        <Starred />
+      </button >
+    )
+  }
+  else {
+    return (
+      <button id="star-line" class={"w-3 h-3 p-0.5"} onClick={(e) => clickStar(lineKey)}>
+        <Star />
+      </button >
+    )
+  };
 };
 
 const clickStar = (lineKey: string) => {
-  console.log("Star toggled for", lineKey);
+  console.log("Starred", lineKey);
   starLine(lineKey);
+};
+
+const clickUnstar = (lineKey: string) => {
+  console.log("Unstarred", lineKey);
+  unstarLine(lineKey);
 };
 
 export const ActivePagePanel = (
