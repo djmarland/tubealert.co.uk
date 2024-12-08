@@ -262,8 +262,8 @@ export const SEVERITIES: { [key: number]: Severity } = {
 } as const;
 
 export const getLines = () => {
-  // When lines are found in local storage, then keep those at the top
-  // Then, append the rest of the lines behind them
+  // Lines found in local storage are pinned at the top.
+  // Rest are inserted behind them, retaining the default order.
 
   const storedLineKeys = getStoredLineKeys();
 
