@@ -261,20 +261,34 @@ export const SEVERITIES: { [key: number]: Severity } = {
   },
 } as const;
 
-export const getStoredLines = () => {
-  const storedLines: Line[] = JSON.parse(localStorage.getItem("storedLines") || "null") || ALL_LINES;
-  return storedLines;
+export const getLines = () => {
+  // When lines are found in local storage, then keep those at the top
+  // Then, append the rest of the lines behind them
+
+  const storedLineKeys = getStoredLineKeys();
+
+  const findInStoredLines = (lineKey: string) => {
+    const foundIndex = storedLineKeys.indexOf(lineKey);
+    return (foundIndex === -1) ? Infinity : foundIndex;
+  }
+
+  ALL_LINES.sort((line, anotherLine) => findInStoredLines(line.urlKey) - findInStoredLines(anotherLine.urlKey));
+  return ALL_LINES;
 };
 
-export const storeLines = (lines: Line[]) => {
-  localStorage.setItem("storedLines", JSON.stringify(lines));
+export const getStoredLineKeys = () => {
+  const storedLineKeys: string[] = JSON.parse(localStorage.getItem("starredLines") || "[]");
+  return storedLineKeys;
+};
+
+export const storeLineKeys = (lineKeys: string[]) => {
+  localStorage.setItem("starredLines", JSON.stringify(lineKeys));
 }
 
-export function moveLineToTop(lineKey: string) {
-  const orderedLines = getStoredLines();
-  const starredLine = orderedLines.splice(orderedLines.findIndex(item => item.urlKey === lineKey), 1)[0]
-  orderedLines.unshift(starredLine);
+export function starLine(lineKey: string) {
+  const storedLineKeys = getStoredLineKeys().filter(e => e !== lineKey);
+  storedLineKeys.unshift(lineKey);
 
-  console.log("New order: ", orderedLines);
-  storeLines(orderedLines);
+  console.log("Starred Lines: ", storedLineKeys);
+  storeLineKeys(storedLineKeys);
 };

@@ -6,7 +6,7 @@ import { A, useLocation, useNavigate } from "@solidjs/router";
 import { Settings } from "./Settings";
 import { ActiveLine } from "./ActiveLine";
 import { DOMElement } from "solid-js/jsx-runtime";
-import { moveLineToTop } from "../services/Line";
+import { starLine } from "../services/Line";
 
 
 const ACTIVE_PANEL_ID = "active-panel";
@@ -68,7 +68,7 @@ const starIcon = (lineKey: string | undefined) => {
 
 const clickStar = (lineKey: string) => {
   console.log("Star toggled for", lineKey);
-  moveLineToTop(lineKey);
+  starLine(lineKey);
 };
 
 export const ActivePagePanel = (
