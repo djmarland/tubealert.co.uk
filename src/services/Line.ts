@@ -260,3 +260,21 @@ export const SEVERITIES: { [key: number]: Severity } = {
     displayOrder: 1,
   },
 } as const;
+
+export const getStoredLines = () => {
+  const storedLines: Line[] = JSON.parse(localStorage.getItem("storedLines") || "null") || ALL_LINES;
+  return storedLines;
+};
+
+export const storeLines = (lines: Line[]) => {
+  localStorage.setItem("storedLines", JSON.stringify(lines));
+}
+
+export function moveLineToTop(lineKey: string) {
+  const orderedLines = getStoredLines();
+  const starredLine = orderedLines.splice(orderedLines.findIndex(item => item.urlKey === lineKey), 1)[0]
+  orderedLines.unshift(starredLine);
+
+  console.log("New order: ", orderedLines);
+  storeLines(orderedLines);
+};
