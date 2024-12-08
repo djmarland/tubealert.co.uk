@@ -1,9 +1,13 @@
 import { Component, JSX, ParentProps, createSignal } from "solid-js";
 import Close from "./Icons/Close";
+import Star from "./Icons/Star";
+import Starred from "./Icons/Starred";
 import { A, useLocation, useNavigate } from "@solidjs/router";
 import { Settings } from "./Settings";
 import { ActiveLine } from "./ActiveLine";
 import { DOMElement } from "solid-js/jsx-runtime";
+import { getStoredLineKeys, starLine, unstarLine } from "../services/Line";
+
 
 const ACTIVE_PANEL_ID = "active-panel";
 
@@ -32,11 +36,10 @@ export const ActivePage: Component = () => {
       will-change-transform
       transition-transform
       duration-300
-      ${
-        viewKey()
-          ? "translate-y-0 translate-x-0"
-          : "translate-y-full lg:translate-y-0 lg:translate-x-full"
-      }`}
+      ${viewKey()
+            ? "translate-y-0 translate-x-0"
+            : "translate-y-full lg:translate-y-0 lg:translate-x-full"
+          }`}
       >
         {viewKey() === "settings" ? (
           <Settings />
@@ -53,6 +56,35 @@ let touchStartX: number | undefined;
 let touchStartMs: number | undefined;
 let activePanel: HTMLDivElement | undefined;
 let isX = false;
+
+const starIcon = (lineKey: string | undefined) => {
+  if (!lineKey) return;
+
+  if (getStoredLineKeys().includes(lineKey)) {
+    return (
+      <button class="w-3 h-3 p-0.5" onClick={(e) => clickUnstar(lineKey)}>
+        <Starred />
+      </button >
+    )
+  }
+  else {
+    return (
+      <button class="w-3 h-3 p-0.5" onClick={(e) => clickStar(lineKey)}>
+        <Star />
+      </button >
+    )
+  };
+};
+
+const clickStar = (lineKey: string) => {
+  starLine(lineKey);
+  location.reload();
+};
+
+const clickUnstar = (lineKey: string) => {
+  unstarLine(lineKey);
+  location.reload();
+};
 
 export const ActivePagePanel = (
   props: ParentProps<{ title: string; lineKey?: string }>,
@@ -74,13 +106,11 @@ export const ActivePagePanel = (
     const newX = e.changedTouches[0].screenX;
     const newY = e.changedTouches[0].screenY;
     if (isX && newX > touchStartX) {
-      activePanel.style.cssText = `transition: none; transform: translateX(${
-        newX - touchStartX
-      }px)`;
+      activePanel.style.cssText = `transition: none; transform: translateX(${newX - touchStartX
+        }px)`;
     } else if (!isX && newY > touchStartY) {
-      activePanel.style.cssText = `transition: none; transform: translateY(${
-        newY - touchStartY
-      }px)`;
+      activePanel.style.cssText = `transition: none; transform: translateY(${newY - touchStartY
+        }px)`;
     } else {
       activePanel.style.cssText = ``;
     }
@@ -137,6 +167,7 @@ export const ActivePagePanel = (
         ontouchmove={onTouchMove}
         ontouchend={onTouchEnd}
       >
+        {starIcon(props.lineKey)}
         <h1 class="text-2xl font-thin">{props.title}</h1>
         <A class="w-3 h-3 p-0.5 inline-block" href="/" title="Close">
           <Close />

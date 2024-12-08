@@ -260,3 +260,40 @@ export const SEVERITIES: { [key: number]: Severity } = {
     displayOrder: 1,
   },
 } as const;
+
+export const getLines = () => {
+  // Lines found in local storage are pinned at the top.
+  // Rest are inserted behind them, retaining the default order.
+
+  const storedLineKeys = getStoredLineKeys();
+
+  const findInStoredLines = (lineKey: string) => {
+    const foundIndex = storedLineKeys.indexOf(lineKey);
+    return (foundIndex === -1) ? Infinity : foundIndex;
+  }
+
+  ALL_LINES.sort((line, anotherLine) => findInStoredLines(line.urlKey) - findInStoredLines(anotherLine.urlKey));
+  return ALL_LINES;
+};
+
+export const getStoredLineKeys = () => {
+  const storedLineKeys: string[] = JSON.parse(localStorage.getItem("starredLines") || "[]");
+  return storedLineKeys;
+};
+
+export const storeLineKeys = (lineKeys: string[]) => {
+  localStorage.setItem("starredLines", JSON.stringify(lineKeys));
+}
+
+export function starLine(lineKey: string) {
+  const storedLineKeys = getStoredLineKeys().filter(e => e !== lineKey);
+  storedLineKeys.unshift(lineKey);
+
+  storeLineKeys(storedLineKeys);
+};
+
+export function unstarLine(lineKey: string) {
+  const storedLineKeys = getStoredLineKeys().filter(e => e !== lineKey);
+
+  storeLineKeys(storedLineKeys);
+};
