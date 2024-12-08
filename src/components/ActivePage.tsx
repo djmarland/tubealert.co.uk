@@ -79,11 +79,13 @@ const starIcon = (lineKey: string | undefined) => {
 const clickStar = (lineKey: string) => {
   console.log("Starred", lineKey);
   starLine(lineKey);
+  location.reload();
 };
 
 const clickUnstar = (lineKey: string) => {
   console.log("Unstarred", lineKey);
   unstarLine(lineKey);
+  location.reload();
 };
 
 export const ActivePagePanel = (
