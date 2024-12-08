@@ -60,16 +60,16 @@ let isX = false;
 const starIcon = (lineKey: string | undefined) => {
   if (!lineKey) return;
 
-  if (getStoredLineKeys().indexOf(lineKey) !== -1) {
+  if (getStoredLineKeys().includes(lineKey)) {
     return (
-      <button id="unstar-line" class={"w-3 h-3 p-0.5"} onClick={(e) => clickUnstar(lineKey)}>
+      <button class="w-3 h-3 p-0.5" onClick={(e) => clickUnstar(lineKey)}>
         <Starred />
       </button >
     )
   }
   else {
     return (
-      <button id="star-line" class={"w-3 h-3 p-0.5"} onClick={(e) => clickStar(lineKey)}>
+      <button class="w-3 h-3 p-0.5" onClick={(e) => clickStar(lineKey)}>
         <Star />
       </button >
     )
@@ -77,13 +77,11 @@ const starIcon = (lineKey: string | undefined) => {
 };
 
 const clickStar = (lineKey: string) => {
-  console.log("Starred", lineKey);
   starLine(lineKey);
   location.reload();
 };
 
 const clickUnstar = (lineKey: string) => {
-  console.log("Unstarred", lineKey);
   unstarLine(lineKey);
   location.reload();
 };

@@ -289,13 +289,11 @@ export function starLine(lineKey: string) {
   const storedLineKeys = getStoredLineKeys().filter(e => e !== lineKey);
   storedLineKeys.unshift(lineKey);
 
-  console.log("Starred Lines: ", storedLineKeys);
   storeLineKeys(storedLineKeys);
 };
 
 export function unstarLine(lineKey: string) {
   const storedLineKeys = getStoredLineKeys().filter(e => e !== lineKey);
 
-  console.log("Starred Lines: ", storedLineKeys);
   storeLineKeys(storedLineKeys);
 };
