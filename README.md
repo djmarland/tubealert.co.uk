@@ -2,7 +2,6 @@
 
 Cloudflare functions
 
-
 ### Running locally
 
 * Create .dev.vars
